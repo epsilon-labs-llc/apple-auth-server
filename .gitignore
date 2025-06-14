@@ -4,5 +4,8 @@ node_modules/
 # Environment variables
 .env
 
+# Firebase Admin SDK credentials
+serviceAccountKey.json
+
 # macOS system file
 .DS_Store

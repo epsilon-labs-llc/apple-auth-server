@@ -1,74 +1,79 @@
 // server.js
-// where your node app starts
 
 const express = require("express");
 const AppleAuth = require("apple-auth");
 const jwt = require("jsonwebtoken");
 const bodyParser = require("body-parser");
+const admin = require("firebase-admin");
+const dotenv = require("dotenv");
+const path = require("path");
+
+// Load environment variables from .env file
+dotenv.config();
+
+// Load Firebase Admin SDK credentials
+const serviceAccount = require("./serviceAccountKey.json");
+
+// Initialize Firebase Admin SDK
+admin.initializeApp({
+  credential: admin.credential.cert(serviceAccount),
+});
 
 const app = express();
 
+// Middleware to parse application/x-www-form-urlencoded
 app.use(bodyParser.urlencoded({ extended: false }));
 
-// The callback route used for Android, which will send the callback parameters from Apple into the Android app.
-// This is done using a deeplink, which will cause the Chrome Custom Tab to be dismissed and providing the parameters from Apple back to the app.
-app.post("/callbacks/sign_in_with_apple", (request, response) => {
+// Android redirect callback from Apple Sign In
+// This will be triggered by Apple and passed back into the Android app via deep link
+app.post("/callbacks/sign_in_with_apple", (req, res) => {
   const redirect = `intent://callback?${new URLSearchParams(
-    request.body
+    req.body
   ).toString()}#Intent;package=${
     process.env.ANDROID_PACKAGE_IDENTIFIER
   };scheme=signinwithapple;end`;
 
-  console.log(`Redirecting to ${redirect}`);
-
-  response.redirect(307, redirect);
+  console.log(`Redirecting to: ${redirect}`);
+  res.redirect(307, redirect);
 });
 
-// Endpoint for the app to login or register with the `code` obtained during Sign in with Apple
-//
-// Use this endpoint to exchange the code (which must be validated with Apple within 5 minutes) for a session in your system
-app.post("/sign_in_with_apple", async (request, response) => {
+// This endpoint receives Apple authorization code from the Flutter app,
+// exchanges it for Apple tokens, and returns a Firebase custom token
+app.post("/sign_in_with_apple", async (req, res) => {
   const auth = new AppleAuth(
     {
-      // use the bundle ID as client ID for native apps, else use the service ID for web-auth flows
-      // https://forums.developer.apple.com/thread/118135
       client_id:
-        request.query.useBundleId === "true"
+        req.query.useBundleId === "true"
           ? process.env.BUNDLE_ID
           : process.env.SERVICE_ID,
       team_id: process.env.TEAM_ID,
-      redirect_uri:
-        "https://flutter-sign-in-with-apple-example.glitch.me/callbacks/sign_in_with_apple",
-      // redirect_uri: "https://siwa-flutter-plugin.dev/", // use the one which was used for the initial load
-      key_id: process.env.KEY_ID
+      redirect_uri: process.env.REDIRECT_URI,
+      key_id: process.env.KEY_ID,
     },
     process.env.KEY_CONTENTS.replace(/\|/g, "\n"),
     "text"
   );
 
-  console.log(request.query);
+  try {
+    // Exchange authorization code for Apple tokens
+    const accessToken = await auth.accessToken(req.query.code);
 
-  const accessToken = await auth.accessToken(request.query.code);
+    // Decode ID token from Apple
+    const idToken = jwt.decode(accessToken.id_token);
+    const userID = idToken.sub;
 
-  const idToken = jwt.decode(accessToken.id_token);
+    // Create a Firebase custom token
+    const customToken = await admin.auth().createCustomToken(userID);
 
-  const userID = idToken.sub;
-
-  console.log(idToken);
-
-  // `userEmail` and `userName` will only be provided for the initial authorization with your app
-  const userEmail = idToken.email;
-  const userName = `${request.query.firstName} ${request.query.lastName}`;
-
-  // 👷🏻‍♀️ TODO: Use the values provided create a new session for the user in your system
-  const sessionID = `NEW SESSION ID for ${userID} / ${userEmail} / ${userName}`;
-
-  console.log(`sessionID = ${sessionID}`);
-
-  response.json({ sessionId: sessionID });
+    // Return the token to the client app
+    res.json({ firebaseToken: customToken });
+  } catch (error) {
+    console.error("Error during Apple Sign In:", error);
+    res.status(500).json({ error: "Authentication failed" });
+  }
 });
 
-// listen for requests :)
-const listener = app.listen(process.env.PORT, () => {
-  console.log("Your app is listening on port " + listener.address().port);
+// Start the server
+const listener = app.listen(process.env.PORT || 3000, () => {
+  console.log(`Server is running on port ${listener.address().port}`);
 });
