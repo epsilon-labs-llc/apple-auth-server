@@ -76,7 +76,7 @@ POST /sign_in_with_apple
 FirebaseAuth.instance.signInWithCustomToken(token);
 ```
 
-## 動作環境
+## 動作条件
 
 - Node.js v18 以上
 - 有効な Apple Developer アカウント

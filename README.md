@@ -76,7 +76,7 @@ This will return a Firebase Custom Token you can use to sign in
 FirebaseAuth.instance.signInWithCustomToken(token);
 ```
 
-## 動作条件
+## Requirements
 
 - Node.js v18 or higher
 - A valid Apple Developer account
