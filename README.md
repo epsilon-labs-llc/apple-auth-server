@@ -41,7 +41,7 @@ npm install
 Create a `.env` file in the root directory based on [`.env.example`](.env.example).
 
 ```bash
-# Apple Sign In Info
+# Sign in with Apple Info
 BUNDLE_ID=com.example.app
 SERVICE_ID=your.service.id.example
 TEAM_ID=XXXXXXXXXX
