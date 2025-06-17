@@ -1,36 +1,34 @@
 {
-  "name": "apple-signin-firebase-server",
+  "name": "apple-signin-server",
   "version": "1.0.0",
-  "description": "A minimal backend for Sign In with Apple integrated with Firebase Authentication.",
+  "description": "Simple Node.js server for Sign in with Apple integration with Flutter apps",
   "main": "server.js",
   "scripts": {
     "start": "node server.js"
   },
   "dependencies": {
-    "apple-auth": "1.0.9",
-    "body-parser": "2.2.0",
-    "express": "^5.1.0",
+    "apple-auth": "^1.0.9",
+    "express": "^5.1.0", 
     "jsonwebtoken": "^9.0.2",
-    "firebase-admin": "^13.4.0"
+    "dotenv": "^16.5.0"
   },
   "engines": {
     "node": ">=18"
   },
   "repository": {
     "type": "git",
-    "url": "https://github.com/epsilon-labs-llc/apple-signin-firebase-server.git"
+    "url": "https://github.com/epsilon-labs-llc/apple-auth-server.git"
   },
   "keywords": [
-    "firebase",
-    "apple-sign-in",
-    "oauth",
-    "express",
-    "nodejs",
-    "auth",
+    "apple",
+    "sign-in-with-apple",
     "flutter",
     "android",
-    "web"
+    "nodejs",
+    "express",
+    "oauth",
+    "authentication"
   ],
-  "author": "Epsilon Labs",
+  "author": "Epsilon Labs, LLC.",
   "license": "MIT"
 }
