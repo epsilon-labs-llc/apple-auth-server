@@ -171,7 +171,10 @@ Appleコールバックを処理し、Androidアプリにリダイレクトし�
 - SERVICE_ID または BUNDLE_ID のどちらか一方が設定されているか確認
   
 ## ライセンス
+
 このプロジェクトは [MIT ライセンス](LICENSE) のもとで公開されています。
+
+### 謝辞
 
 公式の [flutter-sign-in-with-apple-example](https://glitch.com/~flutter-sign-in-with-apple-example)（作者：[Timm Preetz](https://glitch.com/@tp)、[Henri Beck](https://glitch.com/@HenriBeck)）をベースに、最新版に改良を行いました。
 このプロジェクトも MIT ライセンスのもとで公開されています。

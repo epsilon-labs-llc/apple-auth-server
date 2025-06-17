@@ -70,7 +70,7 @@ npm start
 Install [sign_in_with_apple](https://pub.dev/packages/sign_in_with_apple) package to authenticate with Apple.
 
 ### Android Setup
-Add to `android/app/src/main/AndroidManifest.xml`:
+Add the following to `android/app/src/main/AndroidManifest.xml`
 
 ```xml
 <activity
@@ -177,5 +177,5 @@ This project is licensed under the [MIT License](LICENSE).
 
 ### Acknowledgements
 
-Based on the official [flutter-sign-in-with-apple-example](https://glitch.com/~flutter-sign-in-with-apple-example) by [Timm Preetz](https://glitch.com/@tp) and [Henri Beck](https://glitch.com/@HenriBeck) with modern improvements. 
+Based on the official [flutter-sign-in-with-apple-example](https://glitch.com/~flutter-sign-in-with-apple-example) by [Timm Preetz](https://glitch.com/@tp) and [Henri Beck](https://glitch.com/@HenriBeck) with modern improvements.  
 That project is also licensed under the MIT License.
