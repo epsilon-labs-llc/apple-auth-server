@@ -6,7 +6,7 @@
 [![License: MIT](https://img.shields.io/badge/license-MIT-blue.svg)](LICENSE)
 
 A minimal Node.js backend to enable **Sign in with Apple** for Flutter apps.   
-While iOS and macOS work with the Flutter package alone without a server, while Android requires this backend for proper authentication flow. For web implementation, please refer to the [Official Documentation](https://pub.dev/packages/sign_in_with_apple).
+While iOS and macOS work with the Flutter package alone without a server, Android requires this backend for proper authentication flow. For web implementation, please refer to the [Official Documentation](https://pub.dev/packages/sign_in_with_apple).
 
 Glitch announced they're ending web hosting on _July 8, 2025_. This project provides a modern, self-hosted alternative to ensure your **Sign in with Apple** continues working seamlessly.
 
